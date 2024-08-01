@@ -27,7 +27,6 @@ export default async function (
 
   for (const key in fieldMappings) {
     const value = fieldMappings[key];
-    console.log(`${key}: ${value}`);
 
     try {
       // For some reason, Playwright is finding two fields for the address fields.
