@@ -21,10 +21,16 @@ export async function ackCustomsFees(page: Page) {
   const feeHeading = page.getByText("Possible Fee Notice");
   if (feeHeading) {
     console.log("This item has customs fees.");
-    const buttons = await page.locator("button").all();
-    console.log
-    await buttons[2].click();
-    await buttons[3].click();
+    await page.waitForTimeout(8000); // FIXME: is this good? no. nein. nyet. na. this is bad.
+    console.log("Ended timeout.");
+    const buttons = await page
+      .locator('button[data-cy="checkbox-component"]')
+      .all();
+    buttons.forEach(async (button) => {
+      try {
+        await button.click();
+      } catch {}
+    });
   }
 }
 

@@ -25,11 +25,7 @@ export default async function (
     { waitUntil: "networkidle" }
   );
 
-  if ((await page.getByText("Verify your email").count()) !== 0) {
-    throw new Error("FILLOUT_SESSION_TOKEN is expired");
-  }
-
-  startNewSubmission(page);
+  await startNewSubmission(page);
 
   // Fill in the text fields
   for (const key in fieldMappings) {
