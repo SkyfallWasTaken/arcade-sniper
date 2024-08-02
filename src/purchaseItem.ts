@@ -38,5 +38,5 @@ export default async function (
       console.error(e);
     }
   }
-  await filloutDropdown("Your address (Country)", "United Kingdom", page);
+  await filloutDropdown("Your address (Country)", userData.country, page);
 }
