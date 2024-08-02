@@ -9,11 +9,11 @@ function isPreviousSubmissionPending(page: Page): boolean {
 }
 
 // Clicks "New submission" button to restart the submission
-export function startNewSubmission(page: Page) {
+export async function startNewSubmission(page: Page) {
   if (isPreviousSubmissionPending(page)) {
     const newSubmissionButton = page.getByText("New submission");
     // The button you can actually click is 4 elements parent to the text itself
-    newSubmissionButton.first().locator("../../../..").click();
+    await newSubmissionButton.first().locator("../../../..").click();
   }
 }
 
