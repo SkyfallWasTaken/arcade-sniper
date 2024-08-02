@@ -24,8 +24,14 @@ export default async function (
     `https://forms.hackclub.com/arcade-order?user_id=${userId}&item_id=${itemId}&quantity=${quantity}&image=`,
     { waitUntil: "networkidle" }
   );
+
+  if ((await page.getByText("Verify your email").count()) !== 0) {
+    throw new Error("FILLOUT_SESSION_TOKEN is expired");
+  }
+
   startNewSubmission(page);
 
+  // Fill in the text fields
   for (const key in fieldMappings) {
     const value = fieldMappings[key];
 
