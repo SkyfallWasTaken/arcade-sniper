@@ -21,7 +21,8 @@ export default async function (
   userId: string
 ) {
   await page.goto(
-    `https://forms.hackclub.com/arcade-order?user_id=${userId}&item_id=${itemId}&quantity=${quantity}&image=`
+    `https://forms.hackclub.com/arcade-order?user_id=${userId}&item_id=${itemId}&quantity=${quantity}&image=`,
+    { waitUntil: "networkidle" }
   );
   startNewSubmission(page);
 
