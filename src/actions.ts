@@ -2,16 +2,17 @@ import type { Page } from "playwright";
 import chalk from "chalk";
 
 // Checks to see if we have a submission pending.
-function isPreviousSubmissionPending(page: Page): boolean {
+async function isPreviousSubmissionPending(page: Page): Promise<boolean> {
+  await page.waitForTimeout(5000); // TODO: flaky and bad
   const result =
-    page.getByText("You have a submission in progress") != undefined;
+    (await page.getByText("You have a submission in progress").count()) != 0;
   console.debug(`isPreviousSubmissionPending: ${result}`);
   return result;
 }
 
 // Clicks "New submission" button to restart the submission
 export async function startNewSubmission(page: Page) {
-  if (isPreviousSubmissionPending(page)) {
+  if (await isPreviousSubmissionPending(page)) {
     const newSubmissionButton = page.getByText("New submission");
     // The button you can actually click is 4 elements parent to the text itself
     await newSubmissionButton.first().locator("../../../..").click();

@@ -177,3 +177,4 @@ dist
 # PII
 userData.json
 order_logs
+item_additional_data

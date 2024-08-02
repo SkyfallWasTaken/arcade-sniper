@@ -2,8 +2,17 @@ import type { Page } from "playwright";
 import { startNewSubmission, filloutDropdown, ackCustomsFees } from "./actions";
 import userData from "../userData.json";
 import chalk from "chalk";
+import mappings from "./mappings";
 
-const fieldMappings: { [key: string]: string } = {
+interface FieldMappings {
+  [key: string]: string;
+}
+
+interface Mappings {
+  [key: string]: FieldMappings;
+}
+
+const fieldMappings: FieldMappings = {
   "First Name": userData.firstName,
   "Last Name": userData.lastName,
   Email: userData.email,
@@ -33,8 +42,12 @@ export default async function (
   await startNewSubmission(page);
 
   // Fill in the text fields
-  for (const key in fieldMappings) {
-    const value = fieldMappings[key];
+  const finalFieldMappings = {
+    ...fieldMappings,
+    ...(mappings as Mappings)[itemId],
+  };
+  for (const key in finalFieldMappings) {
+    const value = finalFieldMappings[key];
 
     try {
       // For some reason, Playwright is finding two fields for the address fields.
