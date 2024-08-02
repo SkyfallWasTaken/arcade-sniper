@@ -20,10 +20,7 @@ export async function startNewSubmission(page: Page) {
 export async function ackCustomsFees(page: Page) {
   const feeHeading = page.getByText("Possible Fee Notice");
   if (feeHeading) {
-    const checkboxes = page.getByLabel("Checkbox: unchecked");
-    for (const checkbox of await checkboxes.all()) {
-      await checkbox.click();
-    }
+    console.log("This item has customs fees.");
   }
 }
 
