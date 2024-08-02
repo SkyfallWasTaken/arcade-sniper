@@ -1,5 +1,5 @@
 import type { Page } from "playwright";
-import { startNewSubmission } from "./actions";
+import { startNewSubmission, filloutDropdown } from "./actions";
 import userData from "../userData.json";
 
 const fieldMappings: { [key: string]: string } = {
@@ -38,4 +38,5 @@ export default async function (
       console.error(e);
     }
   }
+  await filloutDropdown("Your address (Country)", "United Kingdom", page);
 }

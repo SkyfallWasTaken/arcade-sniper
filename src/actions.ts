@@ -16,3 +16,13 @@ export function startNewSubmission(page: Page) {
     newSubmissionButton.first().locator("../../../..").click();
   }
 }
+
+export async function filloutDropdown(
+  label: string,
+  value: string,
+  page: Page
+) {
+  const dropdownInput = page.getByLabel(label);
+  await dropdownInput.fill(value);
+  await page.keyboard.press("Enter");
+}
