@@ -1,5 +1,5 @@
 import type { Page } from "playwright";
-import { startNewSubmission, filloutDropdown } from "./actions";
+import { startNewSubmission, filloutDropdown, ackCustomsFees } from "./actions";
 import userData from "../userData.json";
 
 const fieldMappings: { [key: string]: string } = {
@@ -39,4 +39,9 @@ export default async function (
     }
   }
   await filloutDropdown("Your address (Country)", userData.country, page);
+
+  const nextButton = page.getByText("Next →");
+  await nextButton.click();
+
+  await ackCustomsFees(page);
 }

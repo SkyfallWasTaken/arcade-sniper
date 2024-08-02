@@ -17,6 +17,17 @@ export function startNewSubmission(page: Page) {
   }
 }
 
+export async function ackCustomsFees(page: Page) {
+  const feeHeading = page.getByText("Possible Fee Notice");
+  if (feeHeading) {
+    const checkboxes = page.getByLabel("Checkbox: unchecked");
+    for (const checkbox of await checkboxes.all()) {
+      await checkbox.click();
+    }
+  }
+}
+
+// Fills out a dropdown.
 export async function filloutDropdown(
   label: string,
   value: string,
