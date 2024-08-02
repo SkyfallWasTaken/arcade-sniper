@@ -15,6 +15,8 @@ const fieldMappings: { [key: string]: string } = {
   "Your phone number": userData.phoneNumber,
 };
 
+const SCREENSHOT_DIR = "order_logs";
+
 export default async function (
   page: Page,
   itemId: string,
@@ -44,16 +46,33 @@ export default async function (
   }
   await filloutDropdown("Your address (Country)", userData.country, page);
 
-  const nextButton = page.getByText("Next →");
+  // Go to the customs screen
+  let nextButton = page.getByText("Next →");
   await nextButton.click();
 
   await ackCustomsFees(page);
 
+  // Go to the review screen
+  nextButton = page.getByText("Next →");
+  await nextButton.click();
+
+  // Generate a screenshot of order details
+  const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
+  const screenshotPath = `${SCREENSHOT_DIR}/${timestamp}.png`;
+  await page.waitForSelector('text="Please review your order"');
+  await page.screenshot({
+    path: screenshotPath,
+    fullPage: true,
+  });
+
   if (dryRun) {
     console.log(chalk.yellow.bold("Dry run enabled, not submitting"));
+    return;
   }
 
-  const finishButton = page.getByText("Next →");
+  // Submit the order. Wahoo!
+  const finishButton = page.getByText("Place Order");
   await finishButton.click();
+  await page.waitForSelector('text="Thank you for submitting your order"');
   console.log(chalk.bold.green("Purchase complete!"));
 }
