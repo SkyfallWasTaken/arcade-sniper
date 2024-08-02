@@ -2,8 +2,13 @@
   "name": "arcade-sniper",
   "module": "src/index.ts",
   "type": "module",
+  "scripts": {
+    "format": "biome format --write .",
+    "lint": "biome lint --write .",
+    "check": "biome check --write ."
+  },
   "devDependencies": {
-    "@types/bun": "latest"
+    "@biomejs/biome": "1.8.3"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
