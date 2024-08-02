@@ -49,10 +49,11 @@ export default async function (
 
   await ackCustomsFees(page);
 
-  if (!dryRun) {
-    const nextButton = page.getByText("Next →");
-    await nextButton.click();
+  if (dryRun) {
+    console.log(chalk.yellow.bold("Dry run enabled, not submitting"));
   }
 
+  const finishButton = page.getByText("Next →");
+  await finishButton.click();
   console.log(chalk.bold.green("Purchase complete!"));
 }
