@@ -21,4 +21,4 @@ context.addCookies([
 console.log("Loading page...");
 const page = await context.newPage();
 
-await purchaseItem(page, "rec7rzTHzjLa1ZysL", 1, ARCADE_USER_ID!, true);
+await purchaseItem(page, "recJN0RO9obEGqP6e", 1, ARCADE_USER_ID!, true);

@@ -6,6 +6,7 @@ import chalk from "chalk";
 const fieldMappings: { [key: string]: string } = {
   "First Name": userData.firstName,
   "Last Name": userData.lastName,
+  Email: userData.email,
 
   "Your address (Address)": userData.addressLine1,
   "Your address ([object Object])": userData.addressLine2,
@@ -38,22 +39,23 @@ export default async function (
     try {
       // For some reason, Playwright is finding two fields for the address fields.
       // This code is a hack to fill the first field.
-      await page.getByLabel(key).first().fill(value);
+      await page.getByLabel(key).first().fill(value, {
+        timeout: 250,
+      });
     } catch (e) {
       console.error(chalk.bold.red(`Field ${key} not found`));
-      console.error(e);
     }
   }
   await filloutDropdown("Your address (Country)", userData.country, page);
 
   // Go to the customs screen
-  let nextButton = page.getByText("Next →");
+  let nextButton = page.getByText("Next");
   await nextButton.click();
 
   await ackCustomsFees(page);
 
   // Go to the review screen
-  nextButton = page.getByText("Next →");
+  nextButton = page.getByText("Next");
   await nextButton.click();
 
   // Generate a screenshot of order details

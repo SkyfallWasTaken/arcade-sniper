@@ -46,6 +46,11 @@ export async function filloutDropdown(
   page: Page
 ) {
   const dropdownInput = page.getByLabel(label);
-  await dropdownInput.fill(value);
+  if ((await dropdownInput.count()) == 0) {
+    return;
+  }
+  await dropdownInput.fill(value, {
+    force: true,
+  });
   await page.keyboard.press("Enter");
 }
