@@ -21,14 +21,18 @@ export async function ackCustomsFees(page: Page) {
   const feeHeading = page.getByText("Possible Fee Notice");
   if (feeHeading) {
     console.log("This item has customs fees.");
-    await page.waitForTimeout(8000); // FIXME: is this good? no. nein. nyet. na. this is bad.
-    console.log("Ended timeout.");
+
+    // Wait for the specific text to be visible
+    await page.waitForSelector(
+      'text="Please acknowledge the following before placing your order"'
+    );
+
     const buttons = await page
       .locator('button[data-cy="checkbox-component"]')
       .all();
     buttons.forEach(async (button) => {
       try {
-        await button.click();
+        await button.click({ force: true });
       } catch {}
     });
   }
