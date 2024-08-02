@@ -1,4 +1,5 @@
 import type { Page } from "playwright";
+import chalk from "chalk";
 
 // Checks to see if we have a submission pending.
 function isPreviousSubmissionPending(page: Page): boolean {
@@ -20,7 +21,7 @@ export async function startNewSubmission(page: Page) {
 export async function ackCustomsFees(page: Page) {
   const feeHeading = page.getByText("Possible Fee Notice");
   if (feeHeading) {
-    console.log("This item has customs fees.");
+    console.warn(chalk.yellow("This item has customs fees."));
 
     // Wait for the specific text to be visible
     await page.waitForSelector(

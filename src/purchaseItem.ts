@@ -1,6 +1,7 @@
 import type { Page } from "playwright";
 import { startNewSubmission, filloutDropdown, ackCustomsFees } from "./actions";
 import userData from "../userData.json";
+import chalk from "chalk";
 
 const fieldMappings: { [key: string]: string } = {
   "First Name": userData.firstName,
@@ -18,7 +19,8 @@ export default async function (
   page: Page,
   itemId: string,
   quantity: number,
-  userId: string
+  userId: string,
+  dryRun: boolean = false
 ) {
   await page.goto(
     `https://forms.hackclub.com/arcade-order?user_id=${userId}&item_id=${itemId}&quantity=${quantity}&image=`,
@@ -36,7 +38,7 @@ export default async function (
       // This code is a hack to fill the first field.
       await page.getByLabel(key).first().fill(value);
     } catch (e) {
-      console.error(`Field ${key} not found`);
+      console.error(chalk.bold.red(`Field ${key} not found`));
       console.error(e);
     }
   }
@@ -46,4 +48,11 @@ export default async function (
   await nextButton.click();
 
   await ackCustomsFees(page);
+
+  if (!dryRun) {
+    const nextButton = page.getByText("Next →");
+    await nextButton.click();
+  }
+
+  console.log(chalk.bold.green("Purchase complete!"));
 }
