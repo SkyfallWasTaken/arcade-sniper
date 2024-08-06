@@ -50,6 +50,7 @@ export default async function (
   userId: string,
   dryRun: boolean = false
 ) {
+  const newlyCompletedContracts: string[] = [];
   contracts.forEach(async (contractInfo) => {
     const contract = contractInfo.contract;
     const itemId = (itemMappings as ItemMappings)[contract.item]; // Safe, as validated above
@@ -69,7 +70,15 @@ export default async function (
       `Contract \`${contractInfo.id}\` ${chalk.green.bold("PASSED")}`
     );
     await purchaseItem(page, itemId, contract.purchase, userId, dryRun);
+    newlyCompletedContracts.push(contractInfo.id);
   });
+  fs.writeFile(
+    "../contracts.json",
+    JSON.stringify([
+      ...(executedContracts.completed as string[]),
+      ...newlyCompletedContracts,
+    ])
+  );
 }
 
 function fail(contractId: string) {
