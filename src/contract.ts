@@ -75,7 +75,7 @@ export default async function (
     await purchaseItem(page, itemId, contract.purchase, userId, dryRun);
     newlyCompletedContracts.push(contractInfo.id);
   });
-  fs.writeFile(
+  await fs.writeFile(
     "../contracts.json",
     JSON.stringify([
       ...(executedContracts.completed as string[]),
