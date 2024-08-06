@@ -30,3 +30,9 @@ Cron("*/5 * * * *", async () => {
   await executeContracts(items, page, ARCADE_USER_ID!, false);
 });
 console.log(`${chalk.green.bold("Running")} every 5 minutes`);
+
+console.log(`${chalk.green.bold("Prefetching")} form`);
+await page.goto(
+  `https://forms.hackclub.com/arcade-order?user_id=${ARCADE_USER_ID}`
+);
+console.log(`${chalk.green.bold("Prefetched")} form`);
