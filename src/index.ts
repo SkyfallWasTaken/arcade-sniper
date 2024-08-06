@@ -1,6 +1,8 @@
 import "dotenv/config";
 import { chromium } from "playwright";
-import purchaseItem from "./purchaseItem";
+import executeContracts from "./contract";
+import { getItems } from "./arcadeShop";
+import chalk from "chalk";
 
 const ARCADE_USER_ID = process.env.ARCADE_USER_ID;
 const FILLOUT_SESSION_TOKEN = process.env.FILLOUT_SESSION_TOKEN;
@@ -21,4 +23,6 @@ context.addCookies([
 console.log("Loading page...");
 const page = await context.newPage();
 
-await purchaseItem(page, "recJN0RO9obEGqP6e", 1, ARCADE_USER_ID!, true);
+const items = await getItems();
+console.log(`Fetched ${chalk.bold(items.length)} items.`);
+await executeContracts(items, page, ARCADE_USER_ID!, true);

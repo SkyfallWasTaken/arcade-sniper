@@ -2,7 +2,7 @@ import type { Page } from "playwright";
 import { startNewSubmission, filloutDropdown, ackCustomsFees } from "./actions";
 import userData from "../userData.json";
 import chalk from "chalk";
-import mappings from "./mappings";
+import mappings from "./fieldMappings";
 
 interface FieldMappings {
   [key: string]: string;
