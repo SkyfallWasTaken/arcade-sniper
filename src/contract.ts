@@ -50,7 +50,9 @@ export default async function (
   userId: string,
   dryRun: boolean = false
 ) {
-  console.log(`Found ${chalk.bold(contracts.length)} contracts to execute.`);
+  console.log(
+    `Found ${chalk.bold(contracts.length)} new contracts to execute.`
+  );
   const newlyCompletedContracts: string[] = [];
   contracts.forEach(async (contractInfo) => {
     const contract = contractInfo.contract;
