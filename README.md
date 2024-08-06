@@ -45,6 +45,11 @@ Example:
 }
 ```
 
+### Environment variables
+
+- `ARCADE_USER_ID`: User ID. It's in the URL when you're in the signed-in view.
+- `FILLOUT_SESSION_TOKEN`: Find it in DevTools
+
 ## Running the sniper
 
 To install dependencies:
