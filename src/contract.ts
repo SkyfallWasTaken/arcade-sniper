@@ -1,6 +1,7 @@
 import fs from "fs/promises";
 import path from "path";
 import itemMappings from "../itemMappings.json";
+import executedContracts from "../contracts.json";
 import chalk from "chalk";
 import purchaseItem from "./purchaseItem";
 import type { Item } from "./arcadeShop";
@@ -36,7 +37,9 @@ async function scan(directoryName = "contracts", results: ScanResult[] = []) {
       });
     }
   }
-  return results;
+  return results.filter(
+    (result) => !(executedContracts.completed as string[]).includes(result.id)
+  );
 }
 
 const contracts = await scan();
