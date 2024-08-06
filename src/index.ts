@@ -9,9 +9,7 @@ const ARCADE_USER_ID = process.env.ARCADE_USER_ID;
 const FILLOUT_SESSION_TOKEN = process.env.FILLOUT_SESSION_TOKEN;
 
 console.log("Launching browser...");
-const browser = await chromium.launch({
-  headless: false,
-});
+const browser = await chromium.launch();
 const context = await browser.newContext();
 context.addCookies([
   {
@@ -27,5 +25,5 @@ const page = await context.newPage();
 Cron("*/5 * * * *", async () => {
   const items = await getItems();
   console.log(`Fetched ${chalk.bold(items.length)} items.`);
-  await executeContracts(items, page, ARCADE_USER_ID!, true);
+  await executeContracts(items, page, ARCADE_USER_ID!, false);
 });
