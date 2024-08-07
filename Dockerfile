@@ -1,5 +1,8 @@
 FROM mcr.microsoft.com/playwright:v1.46.0-jammy
 
+# Install unzip (required for bun)
+RUN apt-get update && apt-get install -y unzip && rm -rf /var/lib/apt/lists/*
+
 # Install Bun
 RUN curl -fsSL https://bun.sh/install | bash
 
@@ -12,10 +15,10 @@ WORKDIR /app
 COPY package.json bun.lockb* ./
 
 # Install dependencies
-RUN bun install --production
+RUN bun install
 
 # Copy the rest of your application
 COPY . .
 
 # Set the command to run your script
-CMD ["tsx", "src/index.ts"]
+CMD ["npm", "run", "start"]
