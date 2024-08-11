@@ -13,7 +13,7 @@ if (!ARCADE_USER_ID || !FILLOUT_SESSION_TOKEN) {
 }
 
 console.log(`${chalk.green.bold("Launching")} browser`);
-const browser = await chromium.launch({ headless: false });
+const browser = await chromium.launch();
 const context = await browser.newContext();
 context.addCookies([
   {
@@ -42,4 +42,6 @@ Cron("*/5 * * * *", async () => {
 console.log(`${chalk.green.bold("Running")} every 5 minutes`);
 
 console.log(`${chalk.green.bold("Prefetching")} form`);
-await page.goto(`https://forms.hackclub.com/arcade-order?user_id=${ARCADE_USER_ID}`);
+await page.goto(
+  `https://forms.hackclub.com/arcade-order?user_id=${ARCADE_USER_ID}`
+);
