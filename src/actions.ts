@@ -1,5 +1,5 @@
-import type { Page } from "playwright";
 import chalk from "chalk";
+import type { Page } from "playwright";
 
 // Checks to see if we have a submission pending.
 async function isPreviousSubmissionPending(page: Page): Promise<boolean> {
@@ -29,9 +29,7 @@ export async function ackCustomsFees(page: Page) {
       'text="Please acknowledge the following before placing your order"'
     );
 
-    const buttons = await page
-      .locator('button[data-cy="checkbox-component"]')
-      .all();
+    const buttons = await page.locator('button[data-cy="checkbox-component"]').all();
     for (const button of buttons) {
       try {
         await button.click({ force: true });
@@ -41,11 +39,7 @@ export async function ackCustomsFees(page: Page) {
 }
 
 // Fills out a dropdown.
-export async function filloutDropdown(
-  label: string,
-  value: string,
-  page: Page
-) {
+export async function filloutDropdown(label: string, value: string, page: Page) {
   const dropdownInput = page.getByLabel(label);
   if ((await dropdownInput.count()) === 0) {
     return;

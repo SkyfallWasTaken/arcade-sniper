@@ -1,5 +1,5 @@
-import { parse } from "node-html-parser";
 import chalk from "chalk";
+import { parse } from "node-html-parser";
 
 // https://github.com/SkyfallWasTaken/arcade-monitor/blob/main/src/items.rs
 interface RawItem {

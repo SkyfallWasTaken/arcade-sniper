@@ -1,11 +1,11 @@
 import fs from "node:fs/promises";
 import path from "node:path";
-import itemMappings from "../itemMappings.json";
-import executedContracts from "../contracts.json";
 import chalk from "chalk";
-import purchaseItem from "./purchaseItem";
-import type { Item } from "./arcadeShop";
 import type { Page } from "playwright";
+import executedContracts from "../contracts.json";
+import itemMappings from "../itemMappings.json";
+import type { Item } from "./arcadeShop";
+import purchaseItem from "./purchaseItem";
 
 interface Contract {
   item: string;
@@ -50,32 +50,24 @@ export default async function (
   userId: string,
   dryRun = false
 ) {
-  console.log(
-    `Found ${chalk.bold(contracts.length)} new contracts to execute.`
-  );
+  console.log(`Found ${chalk.bold(contracts.length)} new contracts to execute.`);
   const newlyCompletedContracts: string[] = [];
   for (const contractInfo of contracts) {
     const contract = contractInfo.contract;
     const itemId = (itemMappings as ItemMappings)[contract.item]; // Safe, as validated above
     const item = items.find((item) => item.id === itemId);
     if (!item) {
-      console.warn(
-        `Item with ID "${itemId}" not found. It may have been deleted :(`
-      );
+      console.warn(`Item with ID "${itemId}" not found. It may have been deleted :(`);
       continue;
     }
-    console.log(
-      `${chalk.green.bold("Executing")} contract \`${contractInfo.id}\``
-    );
+    console.log(`${chalk.green.bold("Executing")} contract \`${contractInfo.id}\``);
 
     if (!(contract.maxPrice >= item.price)) {
       fail(contractInfo.id);
       continue;
     }
 
-    console.log(
-      `Contract \`${contractInfo.id}\` ${chalk.green.bold("PASSED")}`
-    );
+    console.log(`Contract \`${contractInfo.id}\` ${chalk.green.bold("PASSED")}`);
     await purchaseItem(page, itemId, contract.purchase, userId, dryRun);
     newlyCompletedContracts.push(contractInfo.id);
   }
@@ -96,7 +88,5 @@ export default async function (
 }
 
 function fail(contractId: string) {
-  console.log(
-    `Contract \`${contractId}\` does not meet requirements for execution`
-  );
+  console.log(`Contract \`${contractId}\` does not meet requirements for execution`);
 }

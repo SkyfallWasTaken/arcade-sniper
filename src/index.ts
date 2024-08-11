@@ -1,9 +1,9 @@
 import "dotenv/config";
-import { chromium } from "playwright";
-import executeContracts from "./contract";
-import { getItems } from "./arcadeShop";
 import chalk from "chalk";
 import Cron from "croner";
+import { chromium } from "playwright";
+import { getItems } from "./arcadeShop";
+import executeContracts from "./contract";
 
 const ARCADE_USER_ID = process.env.ARCADE_USER_ID;
 const FILLOUT_SESSION_TOKEN = process.env.FILLOUT_SESSION_TOKEN;
@@ -36,6 +36,4 @@ Cron("*/5 * * * *", async () => {
 console.log(`${chalk.green.bold("Running")} every 5 minutes`);
 
 console.log(`${chalk.green.bold("Prefetching")} form`);
-await page.goto(
-  `https://forms.hackclub.com/arcade-order?user_id=${ARCADE_USER_ID}`
-);
+await page.goto(`https://forms.hackclub.com/arcade-order?user_id=${ARCADE_USER_ID}`);

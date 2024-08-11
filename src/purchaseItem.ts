@@ -1,7 +1,7 @@
-import type { Page } from "playwright";
-import { startNewSubmission, filloutDropdown, ackCustomsFees } from "./actions";
-import userData from "../userData.json";
 import chalk from "chalk";
+import type { Page } from "playwright";
+import userData from "../userData.json";
+import { ackCustomsFees, filloutDropdown, startNewSubmission } from "./actions";
 import mappings from "./fieldMappings";
 
 interface FieldMappings {
