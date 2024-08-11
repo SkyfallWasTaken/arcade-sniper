@@ -2,7 +2,7 @@ import "dotenv/config";
 import chalk from "chalk";
 import Cron from "croner";
 import { chromium } from "playwright";
-import { getItems } from "./arcadeShop";
+import { getItems, getTicketCount } from "./arcadeShop";
 import executeContracts from "./contract";
 
 const ARCADE_USER_ID = process.env.ARCADE_USER_ID;
@@ -31,7 +31,13 @@ console.log(`${chalk.green.bold("Loaded")} page`);
 Cron("*/5 * * * *", async () => {
   const items = await getItems();
   console.log(`Fetched ${chalk.bold(items.length)} items.`);
-  await executeContracts(items, page, ARCADE_USER_ID, false);
+  await executeContracts(
+    items,
+    page,
+    ARCADE_USER_ID,
+    await getTicketCount(ARCADE_USER_ID, context),
+    false
+  );
 });
 console.log(`${chalk.green.bold("Running")} every 5 minutes`);
 

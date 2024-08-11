@@ -48,6 +48,7 @@ export default async function (
   items: Item[],
   page: Page,
   userId: string,
+  ticketCount: number,
   dryRun = false
 ) {
   console.log(`Found ${chalk.bold(contracts.length)} new contracts to execute.`);
@@ -63,6 +64,10 @@ export default async function (
     console.log(`${chalk.green.bold("Executing")} contract \`${contractInfo.id}\``);
 
     if (!(contract.maxPrice >= item.price)) {
+      fail(contractInfo.id);
+      continue;
+    }
+    if (ticketCount < contract.purchase * item.price) {
       fail(contractInfo.id);
       continue;
     }

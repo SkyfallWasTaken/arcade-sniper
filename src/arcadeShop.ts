@@ -1,5 +1,6 @@
 import chalk from "chalk";
 import { parse } from "node-html-parser";
+import type { BrowserContext, Page } from "playwright";
 
 // https://github.com/SkyfallWasTaken/arcade-monitor/blob/main/src/items.rs
 interface RawItem {
@@ -41,4 +42,19 @@ export async function getItems(): Promise<Item[]> {
       id: rawItem.id,
     };
   });
+}
+
+export async function getTicketCount(
+  id: string,
+  browserCtx: BrowserContext
+): Promise<number> {
+  const page = await browserCtx.newPage();
+  await page.goto(`https://hackclub.com/arcade/${id}/shop`);
+  const ticketCountTextEl = await page.getByText("Your current balance is").first();
+  const ticketCount = Number.parseInt(
+    (await ticketCountTextEl.innerText())
+      .replace("Your current balance is ", "")
+      .replace(" 🎟️", "")
+  );
+  return ticketCount;
 }
