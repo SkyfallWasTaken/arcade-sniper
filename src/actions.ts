@@ -5,7 +5,7 @@ import chalk from "chalk";
 async function isPreviousSubmissionPending(page: Page): Promise<boolean> {
   await page.waitForTimeout(5000); // TODO: flaky and bad
   const result =
-    (await page.getByText("You have a submission in progress").count()) != 0;
+    (await page.getByText("You have a submission in progress").count()) !== 0;
   console.debug(`isPreviousSubmissionPending: ${result}`);
   return result;
 }
@@ -32,11 +32,11 @@ export async function ackCustomsFees(page: Page) {
     const buttons = await page
       .locator('button[data-cy="checkbox-component"]')
       .all();
-    buttons.forEach(async (button) => {
+    for (const button of buttons) {
       try {
         await button.click({ force: true });
       } catch {}
-    });
+    }
   }
 }
 
@@ -47,7 +47,7 @@ export async function filloutDropdown(
   page: Page
 ) {
   const dropdownInput = page.getByLabel(label);
-  if ((await dropdownInput.count()) == 0) {
+  if ((await dropdownInput.count()) === 0) {
     return;
   }
   await dropdownInput.fill(value, {

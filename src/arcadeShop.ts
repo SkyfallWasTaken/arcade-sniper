@@ -1,4 +1,5 @@
 import { parse } from "node-html-parser";
+import chalk from "chalk";
 
 // https://github.com/SkyfallWasTaken/arcade-monitor/blob/main/src/items.rs
 interface RawItem {
@@ -30,12 +31,13 @@ export async function getItems(): Promise<Item[]> {
   const rawItems: RawItem[] = JSON.parse(nextData.innerText).props.pageProps
     .availableItems;
   return rawItems.map((rawItem) => {
+    console.log(`${chalk.bold(rawItem["Full Name"].trim())}: ${rawItem.id}`);
     return {
       fullName: rawItem["Full Name"],
-      description: rawItem["Description"],
+      description: rawItem.Description,
       fulfillmentDescription: rawItem["Fulfillment Description"],
       price: rawItem["Cost Hours"],
-      stock: rawItem["Stock"],
+      stock: rawItem.Stock,
       id: rawItem.id,
     };
   });

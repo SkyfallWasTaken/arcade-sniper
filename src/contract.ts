@@ -1,5 +1,5 @@
-import fs from "fs/promises";
-import path from "path";
+import fs from "node:fs/promises";
+import path from "node:path";
 import itemMappings from "../itemMappings.json";
 import executedContracts from "../contracts.json";
 import chalk from "chalk";
@@ -21,9 +21,9 @@ interface ScanResult {
 type ItemMappings = { [key: string]: string };
 
 async function scan(directoryName = "contracts", results: ScanResult[] = []) {
-  let files = await fs.readdir(directoryName, { withFileTypes: true });
-  for (let f of files) {
-    let fullPath = path.join(directoryName, f.name);
+  const files = await fs.readdir(directoryName, { withFileTypes: true });
+  for (const f of files) {
+    const fullPath = path.join(directoryName, f.name);
     if (f.isDirectory()) {
       await scan(fullPath, results);
     } else {
@@ -48,39 +48,50 @@ export default async function (
   items: Item[],
   page: Page,
   userId: string,
-  dryRun: boolean = false
+  dryRun = false
 ) {
   console.log(
     `Found ${chalk.bold(contracts.length)} new contracts to execute.`
   );
   const newlyCompletedContracts: string[] = [];
-  contracts.forEach(async (contractInfo) => {
+  for (const contractInfo of contracts) {
     const contract = contractInfo.contract;
     const itemId = (itemMappings as ItemMappings)[contract.item]; // Safe, as validated above
     const item = items.find((item) => item.id === itemId);
     if (!item) {
-      return console.warn(
+      console.warn(
         `Item with ID "${itemId}" not found. It may have been deleted :(`
       );
+      continue;
     }
     console.log(
       `${chalk.green.bold("Executing")} contract \`${contractInfo.id}\``
     );
 
-    if (!(contract.maxPrice >= item.price)) return fail(contractInfo.id);
+    if (!(contract.maxPrice >= item.price)) {
+      fail(contractInfo.id);
+      continue;
+    }
 
     console.log(
       `Contract \`${contractInfo.id}\` ${chalk.green.bold("PASSED")}`
     );
     await purchaseItem(page, itemId, contract.purchase, userId, dryRun);
     newlyCompletedContracts.push(contractInfo.id);
-  });
+  }
+
   await fs.writeFile(
-    "../contracts.json",
-    JSON.stringify([
-      ...(executedContracts.completed as string[]),
-      ...newlyCompletedContracts,
-    ])
+    "contracts.json",
+    JSON.stringify(
+      {
+        completed: [
+          ...(executedContracts.completed as string[]),
+          ...newlyCompletedContracts,
+        ],
+      },
+      null,
+      2
+    )
   );
 }
 

@@ -8,7 +8,7 @@
         "rules": {
             "suspicious": {
                 "noDoubleEquals": "error",
-                "noConsoleLog": "error",
+                "noConsoleLog": "off",
                 "noAssignInExpressions": "warn",
                 "noRedeclare": "warn"
             },

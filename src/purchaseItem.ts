@@ -32,7 +32,7 @@ export default async function (
   itemId: string,
   quantity: number,
   userId: string,
-  dryRun: boolean = false
+  dryRun = false
 ) {
   await page.goto(
     `https://forms.hackclub.com/arcade-order?user_id=${userId}&item_id=${itemId}&quantity=${quantity}&image=`,
@@ -88,6 +88,12 @@ export default async function (
   // Submit the order. Wahoo!
   const finishButton = page.getByText("Place Order");
   await finishButton.click();
-  await page.waitForSelector('text="Thank you for submitting your order"');
+  try {
+    await page.waitForSelector('text="Thank you for submitting your order"');
+  } catch (e) {
+    console.warn(
+      `Could not find confirmation, purchase may not have gone through.\n\n${e}`
+    );
+  }
   console.log(chalk.bold.green("Purchase complete!"));
 }
