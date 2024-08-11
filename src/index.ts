@@ -35,7 +35,7 @@ Cron("*/5 * * * *", async () => {
     items,
     page,
     ARCADE_USER_ID,
-    await getTicketCount(ARCADE_USER_ID, context),
+    await getTicketCount(ARCADE_USER_ID, page),
     false
   );
 });
