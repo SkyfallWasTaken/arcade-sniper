@@ -35,6 +35,8 @@ Any additional fields. TODO: document better.
 
 ### `contracts/{contract_id}.json`
 
+**By default, my contracts will be used.** You should change that!
+
 Example:
 
 ```json
