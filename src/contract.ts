@@ -71,6 +71,10 @@ export default async function (
       fail(contractInfo.id);
       continue;
     }
+    if (!item.stock || item.stock < contract.purchase) {
+      fail(contractInfo.id);
+      continue;
+    }
 
     console.log(`Contract \`${contractInfo.id}\` ${chalk.green.bold("PASSED")}`);
     await purchaseItem(page, itemId, contract.purchase, userId, dryRun);
