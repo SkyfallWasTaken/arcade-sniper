@@ -1,8 +1,10 @@
-# arcade-sniper
+# Arcade Sniper
+
+Arcade Sniper monitors the Hack Club Arcade Shop, and purchases items automatically! It's perfect for getting items as soon as they come back in stock or getting a cheap YubiKey at a 1am sale.
 
 ## Configuration
 
-TODO: automate this
+You'll need to create a few files before you start!
 
 ### `contracts.json`
 
@@ -13,6 +15,8 @@ TODO: automate this
 ```
 
 ### `userData.json`
+
+Replace the information with your own.
 
 ```json
 {
@@ -31,7 +35,13 @@ TODO: automate this
 
 ### `item_additional_data/{item_id}.json`
 
-Any additional fields. TODO: document better.
+Any additional fields you want to set. So for example, the domain name would have this:
+
+```json
+{
+    "orderNotes": "I want skyfall.dev please!"
+}
+```
 
 ### `contracts/{contract_id}.json`
 
