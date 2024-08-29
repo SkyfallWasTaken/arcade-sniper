@@ -40,8 +40,9 @@ async function scan(directoryName = "contracts", results: ScanResult[] = []) {
       });
     }
   }
+  let executed = await executedContracts();
   return results.filter(
-    (result) => !((await executedContracts()).completed as string[]).includes(result.id)
+    (result) => !(executed.completed as string[]).includes(result.id)
   );
 }
 
