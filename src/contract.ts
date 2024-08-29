@@ -20,7 +20,7 @@ interface ScanResult {
 type ItemMappings = { [key: string]: string };
 
 async function executedContracts(): Promise<any> {
-  return JSON.parse((await fs.readFile("../contracts.json")).toString());
+  return JSON.parse((await fs.readFile("contracts.json")).toString());
 }
 
 async function scan(directoryName = "contracts", results: ScanResult[] = []) {
