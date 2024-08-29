@@ -19,7 +19,7 @@ interface ScanResult {
 
 type ItemMappings = { [key: string]: string };
 
-function executedContracts(): any {
+async function executedContracts(): any {
   return JSON.parse(await fs.readFile("../contracts.json"))
 }
 
@@ -41,7 +41,7 @@ async function scan(directoryName = "contracts", results: ScanResult[] = []) {
     }
   }
   return results.filter(
-    (result) => !(executedContracts().completed as string[]).includes(result.id)
+    (result) => !((await executedContracts()).completed as string[]).includes(result.id)
   );
 }
 
@@ -89,7 +89,7 @@ export default async function (
     JSON.stringify(
       {
         completed: [
-          ...(executedContracts().completed as string[]),
+          ...((await executedContracts()).completed as string[]),
           ...newlyCompletedContracts,
         ],
       },
