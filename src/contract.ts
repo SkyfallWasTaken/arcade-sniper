@@ -2,7 +2,6 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import chalk from "chalk";
 import type { Page } from "playwright";
-import executedContracts from "../contracts.json";
 import itemMappings from "../itemMappings.json";
 import type { Item } from "./arcadeShop";
 import purchaseItem from "./purchaseItem";
@@ -19,6 +18,10 @@ interface ScanResult {
 }
 
 type ItemMappings = { [key: string]: string };
+
+function executedContracts(): any {
+  return JSON.parse(await fs.readFile("../contracts.json"))
+}
 
 async function scan(directoryName = "contracts", results: ScanResult[] = []) {
   const files = await fs.readdir(directoryName, { withFileTypes: true });
@@ -38,7 +41,7 @@ async function scan(directoryName = "contracts", results: ScanResult[] = []) {
     }
   }
   return results.filter(
-    (result) => !(executedContracts.completed as string[]).includes(result.id)
+    (result) => !(executedContracts().completed as string[]).includes(result.id)
   );
 }
 
@@ -86,7 +89,7 @@ export default async function (
     JSON.stringify(
       {
         completed: [
-          ...(executedContracts.completed as string[]),
+          ...(executedContracts().completed as string[]),
           ...newlyCompletedContracts,
         ],
       },
